@@ -25,7 +25,7 @@ def net_acl_iptables_rule(item):
         fmt['protocol'] = ' -p {}'.format(item.protocol)
     # FIXME parse for false
     if item.get('stateful', False) == True:
-        fmt['state'] = ' --state NEW'
+        fmt['state'] = ' -m state --state NEW'
     if not item.get('ports', None):
         raise ValueError("missing ports")
     else:
