@@ -1,9 +1,13 @@
 
+import re
+
+
 def net_acl_iptables_line_regex(item):
-    return '^.*INPUT.*comment "20CACL {{ item.name }}"\s+.*ACCEPT'
+    return '^.*INPUT.*comment "20CACL {}".*ACCEPT'.format(re.escape(item['name']))
 
 
 def net_acl_iptables_rule(item):
+
     """ formats an iptables rule """
     # defaults
     fmt = {
