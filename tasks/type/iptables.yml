@@ -1,0 +1,37 @@
+
+- debug: var=net_acl
+
+- name: add IPv4 iptables rules
+  lineinfile:
+    dest: "{{ net_acl_ip4tables_file }}"
+    regexp: '{{ item | net_acl_iptables_line_regex }}'
+    insertafter: "^.*INPUT.*RELATED,ESTABLISHED.*ACCEPT"
+    line: "{{ item | net_acl_ip4tables_rule }}"
+  notify:
+    - net_acl reload iptables IPv4
+  with_items: "{{ net_acl }}"
+  when:
+    - item.ports | default(0)
+#    - item.ipv4 | default (0)
+
+- name: add IPv6 iptables rules
+  lineinfile:
+    dest: "{{ net_acl_ip6tables_file }}"
+    regexp: '{{ item | net_acl_iptables_line_regex }}'
+    insertafter: "^.*INPUT.*RELATED,ESTABLISHED.*ACCEPT"
+    line: "{{ item | net_acl_ip6tables_rule }}"
+  notify:
+    - net_acl reload iptables IPv6
+  with_items: "{{ net_acl }}"
+  when:
+    - item.ports | default(0)
+#    - item.ipv6 | default (0)
+
+- name: enable iptables services
+  service:
+    name: "{{item}}"
+    enabled: yes
+    state: started
+  with_items:
+    - iptables
+    - ip6tables

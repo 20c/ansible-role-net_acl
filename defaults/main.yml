@@ -1,0 +1,2 @@
+net_acl_ip4tables_file: /etc/sysconfig/iptables
+net_acl_ip6tables_file: /etc/sysconfig/ip6tables

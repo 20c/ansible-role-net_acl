@@ -1,0 +1,15 @@
+
+- block:
+
+  - name: include groups tasks
+    include: "{{ net_acl_include }}"
+    with_first_found:
+      - "type/iptables.yml"
+    loop_control:
+      loop_var: net_acl_include
+
+  when:
+    - net_acl != false
+    - net_acl != None
+  tags:
+    - net_acl

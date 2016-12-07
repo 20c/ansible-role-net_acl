@@ -1,0 +1,15 @@
+
+- name: net_acl reload iptables
+  debug: msg="reloading iptables"
+  changed_when: True
+  notify:
+    - reload iptables IPv4
+    - reload iptables IPv6
+
+- name: net_acl reload iptables IPv4
+  service: name=iptables
+           state=reloaded
+
+- name: net_acl reload iptables IPv6
+  service: name=ip6tables
+           state=reloaded
